@@ -6,11 +6,14 @@ const cheerio = require("cheerio");
 const fs = require('fs');
 const fetch = require('node-fetch');
 
+const enc = require('../db/encryption');
+
 const soapRequest = require('easy-soap-request');
 const convert = require('xml-js');
 
 
 app.use("/user", require("./users"));
+app.use("/guild", require("./guild"));
 
 app.get("/guildInfo", (req,res) => {
     const guildName = req.query.name;
@@ -176,18 +179,14 @@ app.get("/charInfo", (req,res) => {
                     userSeedTime : seedRankData[0].times
                 }
 
-                base64encode = (plaintext) => {
-                    return Buffer.from(plaintext, "utf8").toString('base64');
-                }
-
                 async function download(url, filename) {
                     const response = await fetch(url);
                     const buffer = await response.buffer();
-                    fs.writeFile(`./static/images/${filename}.png`, buffer, () =>
+                    fs.writeFile(`./public/images/${filename}.png`, buffer, () =>
                         console.log(`finished downloading! to :::: ${filename}.png`));
                 }
 
-                download(userData.userAvatarImgUrl , base64encode(userData.userAccountID.toString()))
+                download(userData.userAvatarImgUrl , enc.b64e(userData.userAccountID.toString()))
 
                 res.json(userData);
                 res.end();
@@ -196,7 +195,7 @@ app.get("/charInfo", (req,res) => {
     });
 });
 app.get("/guildUserList", (req,res) =>{
-    // https://maplestory.nexon.com/Common/Guild?gid=254315&wid=5
+
     const gid = req.query.gid;
     const wid = req.query.wid;
     const guildPageUrl = "https://maplestory.nexon.com/Common/Guild?gid=" + gid + "&wid=" + wid;
