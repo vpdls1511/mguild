@@ -9,6 +9,9 @@ const fetch = require('node-fetch');
 const soapRequest = require('easy-soap-request');
 const convert = require('xml-js');
 
+
+app.use("/user", require("./users"));
+
 app.get("/guildInfo", (req,res) => {
     const guildName = req.query.name;
     const urlData = "https://maplestory.nexon.com/Ranking/World/Guild?t=1&n="+encodeURI(guildName);
@@ -266,6 +269,6 @@ app.get("/guildUserList", (req,res) =>{
     });
 });
 
-app.use("/user", require("./login"));
+
 
 module.exports = app;
