@@ -3,6 +3,8 @@ const app = express();
 
 const axios = require("axios");
 const cheerio = require("cheerio");
+const fs = require('fs');
+const fetch = require('node-fetch');
 
 const soapRequest = require('easy-soap-request');
 const convert = require('xml-js');
@@ -37,7 +39,6 @@ app.get("/guildInfo", (req,res) => {
         res.json(guildData);
     })
 });
-
 app.get("/charInfo", (req,res) => {
 
     const accountid = req.query.accountid;
@@ -171,13 +172,26 @@ app.get("/charInfo", (req,res) => {
                     userSeedFloor : parseInt(seedRankData[0].floors),
                     userSeedTime : seedRankData[0].times
                 }
+
+                base64encode = (plaintext) => {
+                    return Buffer.from(plaintext, "utf8").toString('base64');
+                }
+
+                async function download(url, filename) {
+                    const response = await fetch(url);
+                    const buffer = await response.buffer();
+                    fs.writeFile(`./static/images/${filename}.png`, buffer, () =>
+                        console.log(`finished downloading! to :::: ${filename}.png`));
+                }
+
+                download(userData.userAvatarImgUrl , base64encode(userData.userAccountID.toString()))
+
                 res.json(userData);
                 res.end();
             });
         });
     });
 });
-
 app.get("/guildUserList", (req,res) =>{
     // https://maplestory.nexon.com/Common/Guild?gid=254315&wid=5
     const gid = req.query.gid;
@@ -251,5 +265,7 @@ app.get("/guildUserList", (req,res) =>{
         res.json(guildUserList);
     });
 });
+
+app.use("/user", require("./login"));
 
 module.exports = app;
