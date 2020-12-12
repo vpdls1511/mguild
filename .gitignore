@@ -39,9 +39,31 @@ build/Release
 
 # Dependency directories
 /node_modules/
-jspm_packages/
-/api/db
-/public/
+/server/node_modules
+/server/node_modules/
+/server/api/db
+/server/api/db/
+/server/public
+/server/public/
+/.pnp
+.pnp.js
+
+# testing
+/coverage
+
+# production
+/build
+
+# misc
+.DS_Store
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
 
 # TypeScript v1 declaration files
 typings/
