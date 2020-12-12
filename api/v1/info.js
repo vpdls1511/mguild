@@ -11,7 +11,6 @@ const enc = require('../db/encryption');
 const soapRequest = require('easy-soap-request');
 const convert = require('xml-js');
 
-
 app.use("/user", require("./users"));
 app.use("/guild", require("./guild"));
 
@@ -165,7 +164,7 @@ app.get("/charInfo", (req,res) => {
                     userAccountID : parseInt(req.query.accountid),
                     userNickName : jsonData.CharacterName._text,
                     userWorldName : jsonData.WorldName._text,
-                    userAvatarImgUrl : jsonData.AvatarImgURL._text,
+                    userAvatarImgUrl : "http://localhost:3000/static/guildUserImg/"+enc.b64e(jsonData.CharacterName._text)+".png",
                     userLevel : parseInt(jsonData.Lev._text),
                     userExp : parseInt(jsonData.Exp._text),
                     userJob : jsonData.JobDetail._text,
@@ -182,11 +181,11 @@ app.get("/charInfo", (req,res) => {
                 async function download(url, filename) {
                     const response = await fetch(url);
                     const buffer = await response.buffer();
-                    fs.writeFile(`./public/images/${filename}.png`, buffer, () =>
+                    fs.writeFile(`./public/guildUserImg/${filename}.png`, buffer, () =>
                         console.log(`finished downloading! to :::: ${filename}.png`));
                 }
 
-                download(userData.userAvatarImgUrl , enc.b64e(userData.userAccountID.toString()))
+                download(userData.userAvatarImgUrl , enc.b64e(userData.userNickName.toString()))
 
                 res.json(userData);
                 res.end();
@@ -267,7 +266,99 @@ app.get("/guildUserList", (req,res) =>{
         res.json(guildUserList);
     });
 });
+app.get("/userListRank" , (req, res) => {
+    getUserSeedRank = async (callback) => {
+        console.log("###############################")
+        console.log("https://maplestory.nexon.com/Ranking/World/Seed/ThisWeek?c=" + encodeURI(req.query.nickname));
+        console.log("###############################")
+        const html = await axios.get("https://maplestory.nexon.com/Ranking/World/Seed/ThisWeek?c=" + encodeURI(req.query.nickname));
+
+        const $ = cheerio.load(html.data);
 
 
+        const body = $("tr.search_com_chk");
+        let list = [
+            {
+                ranking : null,
+                floors : null,
+                times : null
+            }
+        ]
+
+        let rank = body.find("td p.ranking_other").text().slice(1).replace(/ /gi,"");
+
+        if(rank == ""){
+            rank = body.find("td p.ranking_num img").attr("alt");
+            if(rank == undefined){
+                callback(list);
+                return list;
+            }
+        }
+
+        body.each((i,elem) => {
+            list[i] = {
+                ranking : rank,
+                floors : body.find("td:nth-child(4)").text(),
+                times : body.find("td:nth-child(5)").text(),
+
+            }
+        });
+
+        callback(list);
+    }
+
+    getUserSeedRank( (seedRankData) =>{
+        getUserDojangRank = async (callback) => {
+            const html = await axios.get("https://maplestory.nexon.com/Ranking/World/Dojang/Lastweek?c=" + encodeURI(req.query.nickname) + "&t=2");
+            const $ = cheerio.load(html.data);
+            const body = $("tr.search_com_chk");
+
+            let list = [
+                {
+                    ranking : null,
+                    floors : null,
+                    times : null
+                }
+            ]
+
+            let rank = body.find("td p.ranking_other").text().slice(1).replace(/ /gi,"");
+            if(rank == ""){
+                rank = body.find("td p.ranking_num img").attr("alt");
+                if(rank == undefined){
+                    callback(list);
+                    return list;
+                }
+            }
+
+
+
+            body.each((i,elem) => {
+                list[i] = {
+                    ranking : rank,
+                    floors : body.find("td:nth-child(4)").text(),
+                    times : body.find("td:nth-child(5)").text(),
+
+                }
+            });
+
+            callback(list);
+        }
+
+        getUserDojangRank((dojangRankData)=>{
+
+            const userData = {
+                userDojangRank : parseInt(dojangRankData[0].ranking),
+                userDojangFloor : parseInt(dojangRankData[0].floors),
+                userDojangTime : dojangRankData[0].times,
+                userSeedRank : parseInt(seedRankData[0].ranking),
+                userSeedFloor : parseInt(seedRankData[0].floors),
+                userSeedTime : seedRankData[0].times
+            }
+
+            res.json(userData);
+            res.end();
+        });
+    });
+})
 
 module.exports = app;

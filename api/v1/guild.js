@@ -15,7 +15,6 @@ app.get("/userUpdate", (req, res) => {
     const wid = req.query.wid;
     const guildPageUrl = "https://maplestory.nexon.com/Common/Guild?gid=" + gid + "&wid=" + wid;
 
-
     const getGuildUserData = async (callback) => {
 
         const html = await axios.get(guildPageUrl);
@@ -66,7 +65,9 @@ app.get("/userUpdate", (req, res) => {
                 }
                 cnt++;
             });
+
         }
+
 
 
         const guildTotalData = [{
@@ -81,11 +82,11 @@ app.get("/userUpdate", (req, res) => {
 
     getGuildUserData((guildUserList) => {
         const userList = guildUserList[0].guildUserDataList.length;
-        connection = async () => {
+
+        connection = async (callback) => {
             const conn = await pool.dbconn().getConnection()
 
             for (let i = 0; i < userList; i++) {
-                console.log(i);
                 let pushData = guildUserList[0].guildUserDataList[i];
 
                 download = async () => {
@@ -101,11 +102,21 @@ app.get("/userUpdate", (req, res) => {
                     }
                 }
 
-                const sql = "INSERT INTO guildUserList(gid,nickname,level,exp,status,charImg,charJob,charPop) VALUES(?,?,?,?,?,?,?,?)";
-                const params = [ parseInt(gid), pushData.charNick, pushData.charLev, pushData.charExp, pushData.status, enc.b64e(pushData.charNick), pushData.charJob, pushData.charPop ];
+                try{
+                    //최초 등록
+                    const sql = "INSERT INTO guildUserList(gid,nickname,level,exp,status,charImg,charJob,charPop) VALUES(?,?,?,?,?,?,?,?)";
+                    const params = [parseInt(gid), pushData.charNick, pushData.charLev, pushData.charExp, pushData.status, "http://localhost:3000/static/guildUserImg/"+enc.b64e(pushData.charNick)+".png", pushData.charJob, pushData.charPop];
+                    await conn.query("SELECT dRank from guildUserList WHERE nickname =?",[pushData.charNick]);
+                    await conn.query(sql, params);
 
-                console.log(await conn.query(sql, params));
+                }catch (e){
+                    console.log(e.sqlState);
 
+                    await conn.query("UPDATE guildUserList SET level=?, exp=?, charImg=? WHERE nickname=?",
+                        [pushData.charLev, pushData.charExp, "http://localhost:3000/static/guildUserImg/"+enc.b64e(pushData.charNick) , pushData.charNick]);
+
+
+                }
                 download();
             }
 
@@ -117,6 +128,27 @@ app.get("/userUpdate", (req, res) => {
         res.end();
     });
 
+})
+app.get("/getList", (req, res) => {
+    getUser = async (callback) =>{
+        try {
+
+            const conn = await pool.dbconn().getConnection()
+            const gid = req.query.gid;
+
+            const sql = "SELECT * FROM guildUserList WHERE gid="+parseInt(gid);
+            const row = await conn.query(sql);
+
+            callback(row);
+
+        } catch (e){
+            console.log(e)
+        }
+    }
+
+    getUser((jsonData) => {
+        res.json(jsonData);
+    })
 })
 
 module.exports = app;
