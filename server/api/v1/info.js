@@ -14,6 +14,15 @@ const convert = require('xml-js');
 app.use("/user", require("./users"));
 app.use("/guild", require("./guild"));
 
+app.get('/users', (req, res) => {
+    res.json([
+        {id: 1,
+            username: "VictorOladipo"},
+        {id: 2,
+            username: "RussellWestbrook"}
+    ]);
+})
+
 app.get("/guildInfo", (req,res) => {
     const guildName = req.query.name;
     const urlData = "https://maplestory.nexon.com/Ranking/World/Guild?t=1&n="+encodeURI(guildName);
@@ -164,7 +173,7 @@ app.get("/charInfo", (req,res) => {
                     userAccountID : parseInt(req.query.accountid),
                     userNickName : jsonData.CharacterName._text,
                     userWorldName : jsonData.WorldName._text,
-                    userAvatarImgUrl : "http://localhost:3000/static/guildUserImg/"+enc.b64e(jsonData.CharacterName._text)+".png",
+                    userAvatarImgUrl : "http://localhost:3002/static/guildUserImg/"+enc.b64e(jsonData.CharacterName._text)+".png",
                     userLevel : parseInt(jsonData.Lev._text),
                     userExp : parseInt(jsonData.Exp._text),
                     userJob : jsonData.JobDetail._text,

@@ -20,6 +20,7 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="JavaScript File" />
+        <option value="SCSS File" />
       </list>
     </option>
   </component>
@@ -45,6 +46,7 @@
     <property name="javascript.nodejs.core.library.configured.version" value="12.15.0" />
     <property name="javascript.nodejs.core.library.typings.version" value="12.19.8" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/modules" />
+    <property name="list.type.of.created.stylesheet" value="SCSS" />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.detected.package.tslint" value="true" />
     <property name="node.js.path.for.package.eslint" value="project" />
@@ -61,6 +63,7 @@
       <recent name="$PROJECT_DIR$/modules" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/src" />
       <recent name="$PROJECT_DIR$/server" />
       <recent name="$PROJECT_DIR$/static" />
       <recent name="$PROJECT_DIR$" />
@@ -81,7 +84,7 @@
       <workItem from="1607587911441" duration="3983000" />
       <workItem from="1607598465802" duration="5004000" />
       <workItem from="1607688900774" duration="598000" />
-      <workItem from="1607754413831" duration="4143000" />
+      <workItem from="1607754413831" duration="11572000" />
     </task>
     <servers />
   </component>
@@ -106,14 +109,18 @@
     </ignored-roots>
   </component>
   <component name="WindowStateProjectService">
-    <state x="914" y="402" key="#Inspections" timestamp="1607590597640">
+    <state x="914" y="402" key="#Inspections" timestamp="1607784847151">
       <screen x="0" y="0" width="2560" height="1440" />
     </state>
-    <state x="914" y="402" key="#Inspections/-1680.0.1680.1050/0.0.2560.1440@0.0.2560.1440" timestamp="1607590597640" />
+    <state x="914" y="402" key="#Inspections/-1680.0.1680.1050/0.0.2560.1440@0.0.2560.1440" timestamp="1607784847151" />
     <state x="1116" y="591" key="#Other_File_Types" timestamp="1607518089954">
       <screen x="0" y="25" width="2560" height="1415" />
     </state>
     <state x="1116" y="591" key="#Other_File_Types/-1680.25.1680.1025/0.25.2560.1415@0.25.2560.1415" timestamp="1607518089954" />
+    <state x="1018" y="471" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog" timestamp="1607768800745">
+      <screen x="0" y="0" width="2560" height="1440" />
+    </state>
+    <state x="1018" y="471" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog/-1680.0.1680.1050/0.0.2560.1440@0.0.2560.1440" timestamp="1607768800745" />
     <state x="1093" y="643" key="Github.CreateGistDialog" timestamp="1607518307296">
       <screen x="0" y="0" width="2560" height="1440" />
     </state>
@@ -150,11 +157,12 @@
       <screen x="0" y="0" width="2560" height="1440" />
     </state>
     <state width="600" height="428" key="javadoc.popup/-1680.0.1680.1050/0.0.2560.1440@0.0.2560.1440" timestamp="1607601049122" />
-    <state x="945" y="345" key="run.anything.popup" timestamp="1607542845452">
-      <screen x="0" y="0" width="2560" height="1440" />
+    <state x="945" y="345" key="run.anything.popup" timestamp="1607760880780">
+      <screen x="0" y="25" width="2560" height="1415" />
     </state>
     <state x="945" y="345" key="run.anything.popup/-1680.0.1680.1050/0.0.2560.1440@0.0.2560.1440" timestamp="1607542845452" />
     <state x="945" y="345" key="run.anything.popup/-1680.25.1680.1025/0.0.2560.1440@0.0.2560.1440" timestamp="1607521198138" />
+    <state x="945" y="345" key="run.anything.popup/-1680.25.1680.1025/0.25.2560.1415@0.25.2560.1415" timestamp="1607760880780" />
     <state x="945" y="331" width="670" height="58" key="search.everywhere.popup" timestamp="1607526644257">
       <screen x="0" y="0" width="2560" height="1440" />
     </state>

@@ -1,0 +1,33 @@
+@import "./menuAnimation";
+
+div.menu{
+  width: 100%;
+  height: 50px;
+  ul.topMenu{
+    list-style: none;
+    margin: 0px auto;
+    padding: 0px;
+    width: 300px;
+    height: 50px;
+    li{
+      width: 150px;
+      float: left;
+      text-align: center;
+      margin: 0px auto;
+      a{
+        text-decoration-line: none;
+        color: #333;
+        font-size: 1.4em;
+        line-height: 50px;
+        &.hover{
+          font-size: 2em;
+          animation-name: textUnderLine;
+        }
+        &.active{
+          font-weight: bold;
+          color: #00b7f3;
+        }
+      }
+    }
+  }
+}

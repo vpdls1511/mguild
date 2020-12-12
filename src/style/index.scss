@@ -1,0 +1,17 @@
+@import "./compnents/Menu";
+
+$text_color : #888;
+
+html,body{
+  margin: 0px;
+  padding: 0px;
+  color: $text_color;
+}
+
+div#root{
+  div{
+    div.wrap{
+      clear:both;
+    }
+  }
+}
